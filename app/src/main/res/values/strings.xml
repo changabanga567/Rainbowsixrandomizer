@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Character Selector</string>
+    <string name="attack">Attack</string>
+    <string name="defense">Defense</string>
+    <string name="select_random_character">Select Random Character</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+
+
+</resources>
