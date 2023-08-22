@@ -6,27 +6,20 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
+import java.util.List;
+import com.example.rainbowsixselector.Characters;
+import com.example.rainbowsixselector.Character;
+import com.example.rainbowsixselector.Role;
+
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String SIDE_KEY = "side_key";
-    private ArrayList<String> attackCharacters;
-    private ArrayList<String> defenseCharacters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Initialize character lists
-        attackCharacters = new ArrayList<>();
-        defenseCharacters = new ArrayList<>();
-
-        // Dummy data: You can replace these with your characters
-        for (int i = 1; i <= 30; i++) {
-            attackCharacters.add("Attack Character " + i);
-            defenseCharacters.add("Defense Character " + i);
-        }
 
         Button btnAttack = findViewById(R.id.btn_attack);
         Button btnDefense = findViewById(R.id.btn_defense);
@@ -34,35 +27,34 @@ public class MainActivity extends AppCompatActivity {
         btnAttack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startCharacterSelectionActivity("Attack");
+                startCharacterSelectionActivity(Role.ATTACK);
             }
         });
 
         btnDefense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startCharacterSelectionActivity("Defense");
+                startCharacterSelectionActivity(Role.DEFENSE);
             }
         });
     }
 
-    public ArrayList<String> getAttackCharacters() {
-        return attackCharacters;
-    }
+    private void startCharacterSelectionActivity(Role role) {
+        List<Character> filteredCharacters = new ArrayList<>();
 
-    public ArrayList<String> getDefenseCharacters() {
-        return defenseCharacters;
-    }
-
-
-    private void startCharacterSelectionActivity(String side) {
-        Intent intent = new Intent(this, CharacterSelectionActivity.class);
-        intent.putExtra(SIDE_KEY, side);
-        if ("Attack".equals(side)) {
-            intent.putStringArrayListExtra("characters_list", attackCharacters);
-        } else {
-            intent.putStringArrayListExtra("characters_list", defenseCharacters);
+        for (Character character : Characters.allCharacters) {
+            if (character.getRole() == role) {
+                filteredCharacters.add(character);
+            }
         }
-        startActivity(intent);
-    }}
 
+        ArrayList<String> characterNames = new ArrayList<>();
+        for (Character character : filteredCharacters) {
+            characterNames.add(character.getName());
+        }
+
+        Intent intent = new Intent(this, CharacterSelectionActivity.class);
+        intent.putStringArrayListExtra("characters_list", characterNames);
+        startActivity(intent);
+    }
+}
